@@ -1,0 +1,179 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sign Up | Clothing</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+  <style>
+    body {
+      background: linear-gradient(to top left, #fafafa, #e2d1c3);
+      font-family: 'Georgia', serif;
+    }
+
+    .signup-card {
+      max-width: 450px;
+      margin: 8vh auto;
+      padding: 2.5rem 2rem;
+      background: #fffdf9;
+      border-radius: 1rem;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+      border: 1px solid #d0c7b1;
+      animation: fadeInUp 0.5s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .signup-title {
+      text-align: center;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: #403b36;
+      border-bottom: 2px solid #d1bfa3;
+      padding-bottom: 0.5rem;
+      margin-bottom: 1.8rem;
+    }
+
+    .input-group-text {
+      background: #f0f0f0;
+      border-right: none;
+      color: #6a6050;
+      font-weight: 500;
+    }
+
+    .form-control {
+      border-left: none;
+      border: 1px solid #d0c7b1;
+      background-color: #fcfaf6;
+      font-size: 0.94rem;
+      color: #3c3c3c;
+    }
+
+    .form-control:focus {
+      box-shadow: 0 0 0 0.15rem rgba(160, 140, 100, 0.2);
+      border-color: #a0896d;
+    }
+
+    .btn-classic {
+      background-color: #403b36;
+      color: #fffdf9;
+      font-weight: 600;
+      text-transform: uppercase;
+      border-radius: 0.4rem;
+      transition: all 0.3s ease;
+    }
+
+    .btn-classic:hover {
+      background-color: #282421;
+    }
+
+    .form-label {
+      font-weight: 500;
+      font-size: 0.92rem;
+      color: #444;
+    }
+
+    .toggle-icon {
+      position: absolute;
+      right: 0.9rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.1rem;
+      cursor: pointer;
+      color: #888;
+      z-index: 2;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="signup-card">
+    <h3 class="signup-title">Create an Account</h3>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} text-center small">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+
+    <form method="POST">
+      {% csrf_token %}
+
+      <div class="mb-3">
+        <label for="id_username" class="form-label">Username</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-person"></i></span>
+          {{ form.username }}
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="id_email" class="form-label">Email</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+          {{ form.email }}
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="id_mobile" class="form-label">Mobile Number</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-phone"></i></span>
+          {{ form.mobile }}
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="id_password1" class="form-label">Password</label>
+        <div class="input-group position-relative">
+          <span class="input-group-text"><i class="bi bi-lock"></i></span>
+          {{ form.password1 }}
+          <i class="bi bi-eye-slash toggle-icon" onclick="toggleVisibility(this, 'id_password1')"></i>
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <label for="id_password2" class="form-label">Confirm Password</label>
+        <div class="input-group position-relative">
+          <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+          {{ form.password2 }}
+          <i class="bi bi-eye-slash toggle-icon" onclick="toggleVisibility(this, 'id_password2')"></i>
+        </div>
+      </div>
+
+      <div class="d-grid">
+        <button type="submit" class="btn btn-classic">Sign Up</button>
+      </div>
+    </form>
+
+    <p class="text-center mt-3 mb-0 small">
+      Already have an account?
+      <a href="{% url 'login' %}" class="fw-semibold text-decoration-none">Login here</a>
+    </p>
+  </div>
+
+  <script>
+    function toggleVisibility(icon, inputId) {
+      const field = document.getElementById(inputId);
+      const isHidden = field.type === "password";
+
+      field.type = isHidden ? "text" : "password";
+      icon.classList.toggle("bi-eye", isHidden);
+      icon.classList.toggle("bi-eye-slash", !isHidden);
+    }
+  </script>
+</body>
+</html>

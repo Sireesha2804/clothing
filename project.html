@@ -1,0 +1,752 @@
+ <!-- <script src="C:\Users\krish\OneDrive\Desktop\project\shop.js"></script> -->
+<!-- <link type="text/css" href="C:\Users\krish\OneDrive\Desktop\project\css\shop.css" rel="stylesheet"> --> 
+{% load static %}
+  <script src="{% static 'js/shop.js' %}"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Clothing</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link href="{% static 'css/style.css' %}" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<div style="background-image: linear-gradient(to right,#fdfcf9,#eae4d9);" >
+<!-- 🔝 Header & Navbar -->
+<nav class="navbar navbar-expand-lg px-3 py-2 main-header sticky-top shadow-sm navbar-custom">
+  <a class="navbar-brand" href="#">Clothing</a> 
+ <!-- Search Bar -->
+<form class="d-flex mx-3 flex-grow-1 search-box">
+  <input 
+    class="form-control" 
+    type="search" 
+    placeholder="Search for products" >
+</form>
+
+  <div class="ms-auto d-flex align-items-center gap-4">
+    {% if user.is_authenticated %}
+      <span class="text-muted">Hi, {{ user.username }}</span>
+      <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+    {% else %}
+      <a class="nav-link" href="{% url 'login' %}">Login</a>
+    {% endif %}
+<!-- Cart Toggle Button -->
+<button onclick="toggleCart()" class="btn btn-outline-dark">
+  🛒 Cart <span id="cart-count" class="badge bg-dark">0</span>
+</button>
+  </div>
+</nav>
+
+<!-- Your other content here -->
+
+<!-- 🛒 Cart Box -->
+<div id="cart-box" class="cart-box card p-3 shadow" style="display: none;">
+<h6 class="fw-bold mb-2">🛒 Your Cart</h6>
+
+  <!-- 🔍 Cart Search -->
+  <!-- <input
+    type="text"
+    id="cart-search"
+    class="form-control form-control-sm mb-2"
+    placeholder="🔍 Search in cart..."
+    oninput="filterCartItems(this.value)"
+  > -->
+
+  <!-- 📦 Cart Items -->
+  <ul id="cart-items" class="list-group my-2">
+    <!-- Items inserted by updateCartUI() -->
+  </ul>
+<ul id="cart-items" class="list-group my-2">
+  <li class="empty-cart-msg">🛍️ Your cart is empty</li>
+</ul>
+  <!-- 💰 Total Summary -->
+  <div class="d-flex justify-content-between align-items-center mt-2">
+    <span class="fw-bold">Total:</span>
+    ₹<span id="cart-total" class="fw-bold">0</span>
+  </div>
+
+  <p class="text-muted small mb-3">Items in cart: <span id="cart-count">0</span></p>
+
+  <!-- 🔧 Cart Actions -->
+  <div class="d-grid gap-2">
+    <button class="btn btn-outline-danger btn-sm" onclick="clearCart()">🗑 Delete All Items</button>
+    {% if user.is_authenticated %}
+      <button class="btn btn-outline-success btn-sm" onclick="syncCartToBackend()">💾 Save Cart to Account</button>
+    {% endif %}
+  </div>
+</div>
+
+<!-- Your other content here -->
+
+ <!-- your items ended-->
+<!-- 🔘 Category Navigation Bar -->
+<div class="category-bar mt-4 text-center">
+  <div class="d-inline-flex flex-wrap gap-3 justify-content-center px-3 py-2">
+<a href="#trending" class="btn btn-outline-dark px-4">Trending</a>
+<a href="#deals" class="btn btn-outline-dark px-4">Offers</a>
+<a href="#kids" class="btn btn-outline-dark px-4">Kids</a>
+<a href="#men" class="btn btn-outline-dark px-4">Men</a>
+<a href="#women" class="btn btn-outline-dark px-4">Women</a>
+<a href="#occasion" class="btn btn-outline-dark px-4">Occasion Wear</a>
+</div>
+</div>
+
+<!-- 🛍️ Trending Products -->
+<div class="container my-5" id="trending">
+  <h5 class="section-title">🔥 Trending Products</h5>
+  <div class="row row-cols-2 row-cols-md-5 g-4">
+
+    <div class="col">
+      <div class="card product-card text-center p-3 h-100">
+        <img src="{% static 'project/occasion_wear/men/image1.jpg' %}" class="card-img-top" alt="Denim Jacket">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title">Denim Jacket</h6>
+          <p class="text-success">₹2,000</p>
+<button class="btn add-btn mt-auto add-to-cart" style="
+    border: 1px solid black;"   data-name="Cartoon Hoodie" data-price="999"> Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card product-card text-center p-3 h-100">
+        <img src="{% static 'project/women/2.jpg' %}" class="card-img-top" alt="Denim Jacket">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title">Denim Jacket</h6>
+          <p class="text-success">₹2,000</p>
+<button class="btn add-btn mt-auto add-to-cart" style="
+    border: 1px solid black;"   data-name="Cartoon Hoodie" data-price="999"> Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card product-card text-center p-3 h-100">
+        <img src="{% static 'project/mens/4.jpg' %}" class="card-img-top" alt="Denim Jacket">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title">Denim Jacket</h6>
+          <p class="text-success">₹2,000</p>
+<button class="btn add-btn mt-auto add-to-cart" style="
+    border: 1px solid black;"   data-name="Cartoon Hoodie" data-price="999"> Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card product-card text-center p-3 h-100">
+        <img src="{% static 'project/occasion_wear/women/image1.jpg' %}" class="card-img-top" alt="Denim Jacket">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title">Denim Jacket</h6>
+          <p class="text-success">₹2,000</p>
+<button class="btn add-btn mt-auto add-to-cart" style="
+    border: 1px solid black;"   data-name="Cartoon Hoodie" data-price="999"> Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card product-card text-center p-3 h-100">
+        <img src="{% static 'project/occasion_wear/men/image1.jpg' %}" class="card-img-top" alt="Denim Jacket">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title">Denim Jacket</h6>
+          <p class="text-success">₹2,000</p>
+<button class="btn add-btn mt-auto add-to-cart" style="
+    border: 1px solid black;"   data-name="Cartoon Hoodie" data-price="999"> Add to Cart</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 🛍️ offers -->
+<div class="container my-5" id="deals" >
+  <h5 class="section-title">offers</h5>
+  <div class="row row-cols-2 row-cols-md-5 g-4">
+
+    <div class="col">
+      <div class="card product-card text-center p-3 h-100">
+        <img src="{% static 'project/occasion_wear/men/image1.jpg' %}" class="card-img-top" alt="Denim Jacket">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title">Denim Jacket</h6>
+          <p class="text-success">₹2,000</p>
+<button class="btn add-btn mt-auto add-to-cart" style="
+    border: 1px solid black;"   data-name="Cartoon Hoodie" data-price="999"> Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card product-card text-center p-3 h-100">
+        <img src="{% static 'project/women/2.jpg' %}" class="card-img-top" alt="Denim Jacket">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title">Denim Jacket</h6>
+          <p class="text-success">₹2,000</p>
+<button class="btn add-btn mt-auto add-to-cart" style="
+    border: 1px solid black;"   data-name="Cartoon Hoodie" data-price="999"> Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card product-card text-center p-3 h-100">
+        <img src="{% static 'project/mens/4.jpg' %}" class="card-img-top" alt="Denim Jacket">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title">Denim Jacket</h6>
+          <p class="text-success">₹2,000</p>
+<button class="btn add-btn mt-auto add-to-cart" style="
+    border: 1px solid black;"   data-name="Cartoon Hoodie" data-price="999"> Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card product-card text-center p-3 h-100">
+        <img src="{% static 'project/occasion_wear/women/image1.jpg' %}" class="card-img-top" alt="Denim Jacket">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title">Denim Jacket</h6>
+          <p class="text-success">₹2,000</p>
+<button class="btn add-btn mt-auto add-to-cart" style="
+    border: 1px solid black;"   data-name="Cartoon Hoodie" data-price="999"> Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card product-card text-center p-3 h-100">
+        <img src="{% static 'project/occasion_wear/men/image1.jpg' %}" class="card-img-top" alt="Denim Jacket">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title">Denim Jacket</h6>
+          <p class="text-success">₹2,000</p>
+<button class="btn add-btn mt-auto add-to-cart" style="
+    border: 1px solid black;"   data-name="Cartoon Hoodie" data-price="999"> Add to Cart</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="container my-5" id="kids">
+  <h5 class="section-title">🧒 Kids Collection   <span>BOYS</span></h5>
+  <div class="row row-cols-2 row-cols-md-5 g-4">
+
+    <div class="col">
+      <div class="card product-card text-center p-3 h-100">
+        <img src="{% static '\project\kids_wear\boy\1.jpg' %}" class="card-img-top" alt="Kids Jacket">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title">Kids Jacket</h6>
+          <p class="text-success">₹1,299</p>
+<button class="btn add-btn mt-auto add-to-cart" style="
+    border: 1px solid black;"   data-name="Cartoon Hoodie" data-price="999"> Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card product-card text-center p-3 h-100">
+        <img src="{% static '\project\kids_wear\boy\2.png' %}" class="card-img-top" alt="Printed T-shirt">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title">Printed T-shirt</h6>
+          <p class="text-success">₹799</p>
+<button class="btn add-btn mt-auto add-to-cart" style="
+    border: 1px solid black;"   data-name="Cartoon Hoodie" data-price="999"> Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card product-card text-center p-3 h-100">
+        <img src="{% static '\project\kids_wear\boy\3.jpg' %}" class="card-img-top" alt="Kids Ethnic Wear">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title">Kids Ethnic Wear</h6>
+          <p class="text-success">₹1,499</p>
+<button class="btn add-btn mt-auto add-to-cart" style="
+    border: 1px solid black;"   data-name="Cartoon Hoodie" data-price="999"> Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card product-card text-center p-3 h-100">
+        <img src="{% static '\project\kids_wear\boy\4.jpg' %}" class="card-img-top" alt="Cartoon Hoodie">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title">Cartoon Hoodie</h6>
+          <p class="text-success">₹999</p>
+<button class="btn add-btn mt-auto add-to-cart" style="
+    border: 1px solid black;"   data-name="Cartoon Hoodie" data-price="999"> Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card product-card text-center p-3 h-100">
+        <img src="{% static '\project\kids_wear\boy\5.jpg' %}" class="card-img-top" alt="Kids Shorts">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title">Kids Shorts</h6>
+          <p class="text-success">₹699</p>
+<button class="btn add-btn mt-auto add-to-cart" style="
+    border: 1px solid black;"   data-name="Cartoon Hoodie" data-price="999"> Add to Cart</button>
+        </div>
+      </div>
+    </div>
+   <div class="col">
+      <div class="card product-card text-center p-3 h-100">
+        <img src="{% static '\project\kids_wear\boy\6.jpg' %}" class="card-img-top" alt="Kids Shorts">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title">Kids Shorts</h6>
+          <p class="text-success">₹699</p>
+<button class="btn add-btn mt-auto add-to-cart" style="
+    border: 1px solid black;"   data-name="Cartoon Hoodie" data-price="999"> Add to Cart</button>
+        </div>
+      </div>
+    </div>   <div class="col">
+      <div class="card product-card text-center p-3 h-100">
+        <img src="{% static '\project\kids_wear\boy\7.jpg' %}" class="card-img-top" alt="Kids Shorts">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title">Kids Shorts</h6>
+          <p class="text-success">₹699</p>
+<button class="btn add-btn mt-auto add-to-cart" style="
+    border: 1px solid black;"   data-name="Cartoon Hoodie" data-price="999"> Add to Cart</button>
+        </div>
+      </div>
+    </div>   <div class="col">
+      <div class="card product-card text-center p-3 h-100">
+        <img src="{% static '\project\kids_wear\boy\11.jpg' %}" class="card-img-top" alt="Kids Shorts">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title">Kids Shorts</h6>
+          <p class="text-success">₹699</p>
+<button class="btn add-btn mt-auto add-to-cart" style="
+    border: 1px solid black;"   data-name="Cartoon Hoodie" data-price="999"> Add to Cart</button>
+        </div>
+      </div>
+    </div>   <div class="col">
+      <div class="card product-card text-center p-3 h-100">
+        <img src="{% static '\project\kids_wear\boy\8.jpg' %}" class="card-img-top" alt="Kids Shorts">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title">Kids Shorts</h6>
+          <p class="text-success">₹699</p>
+<button class="btn add-btn mt-auto add-to-cart" style="
+    border: 1px solid black;"   data-name="Cartoon Hoodie" data-price="999"> Add to Cart</button>
+        </div>
+      </div>
+    </div>   <div class="col">
+      <div class="card product-card text-center p-3 h-100">
+        <img src="{% static '\project\kids_wear\boy\9.jpg' %}" class="card-img-top" alt="Kids Shorts">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title">Kids Shorts</h6>
+          <p class="text-success">₹699</p>
+<button class="btn add-btn mt-auto add-to-cart" style="
+    border: 1px solid black;"   data-name="Cartoon Hoodie" data-price="999"> Add to Cart</button>
+        </div>
+      </div>
+    </div>
+    </div>   
+</div>
+
+<div class="container my-5" id="kids">
+  <h5 class="section-title">🧒 Kids Collection   <span>Girls</span></h5>
+
+  <div class="row row-cols-2 row-cols-md-5 g-4">
+
+    <div class="col">
+      <div class="card product-card text-center p-3 h-100">
+        <img src="{% static '\project\kids_wear\girl\2.jpg' %}" class="card-img-top" alt="Kids Jacket">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title">Kids Jacket</h6>
+          <p class="text-success">₹1,299</p>
+<button class="btn add-btn mt-auto add-to-cart" style="
+    border: 1px solid black;"   data-name="Cartoon Hoodie" data-price="999"> Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card product-card text-center p-3 h-100">
+        <img src="{% static '\project\kids_wear\girl\10.jpg' %}" class="card-img-top" alt="Printed T-shirt">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title">Printed T-shirt</h6>
+          <p class="text-success">₹799</p>
+<button class="btn add-btn mt-auto add-to-cart" style="
+    border: 1px solid black;"   data-name="Cartoon Hoodie" data-price="999"> Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card product-card text-center p-3 h-100">
+        <img src="{% static '\project\kids_wear\girl\3.jpg' %}" class="card-img-top" alt="Kids Ethnic Wear">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title">Kids Ethnic Wear</h6>
+          <p class="text-success">₹1,499</p>
+<button class="btn add-btn mt-auto add-to-cart" style="
+    border: 1px solid black;"   data-name="Cartoon Hoodie" data-price="999"> Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card product-card text-center p-3 h-100">
+        <img src="{% static '\project\kids_wear\girl\4.jpg' %}" class="card-img-top" alt="Cartoon Hoodie">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title">Cartoon Hoodie</h6>
+          <p class="text-success">₹999</p>
+<button class="btn add-btn mt-auto add-to-cart" style="
+    border: 1px solid black;"   data-name="Cartoon Hoodie" data-price="999"> Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card product-card text-center p-3 h-100">
+        <img src="{% static '\project\kids_wear\girl\5.jpg' %}" class="card-img-top" alt="Kids Shorts">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title">Kids Shorts</h6>
+          <p class="text-success">₹699</p>
+<button class="btn add-btn mt-auto add-to-cart" style="
+    border: 1px solid black;"   data-name="Cartoon Hoodie" data-price="999"> Add to Cart</button>
+        </div>
+      </div>
+    </div>
+   <div class="col">
+      <div class="card product-card text-center p-3 h-100">
+        <img src="{% static '\project\kids_wear\girl\6.jpg' %}" class="card-img-top" alt="Kids Shorts">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title">Kids Shorts</h6>
+          <p class="text-success">₹699</p>
+<button class="btn add-btn mt-auto add-to-cart" style="
+    border: 1px solid black;"   data-name="Cartoon Hoodie" data-price="999"> Add to Cart</button>
+        </div>
+      </div>
+    </div>   <div class="col">
+      <div class="card product-card text-center p-3 h-100">
+        <img src="{% static '\project\kids_wear\girl\7.jpg' %}" class="card-img-top" alt="Kids Shorts">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title">Kids Shorts</h6>
+          <p class="text-success">₹699</p>
+<button class="btn add-btn mt-auto add-to-cart" style="
+    border: 1px solid black;"   data-name="Cartoon Hoodie" data-price="999"> Add to Cart</button>
+        </div>
+      </div>
+    </div>   <div class="col">
+      <div class="card product-card text-center p-3 h-100">
+        <img src="{% static '\project\kids_wear\girl\images.jpg' %}" class="card-img-top" alt="Kids Shorts">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title">Kids Shorts</h6>
+          <p class="text-success">₹699</p>
+<button class="btn add-btn mt-auto add-to-cart" style="
+    border: 1px solid black;"   data-name="Cartoon Hoodie" data-price="999"> Add to Cart</button>
+        </div>
+      </div>
+    </div>   <div class="col">
+      <div class="card product-card text-center p-3 h-100">
+        <img src="{% static '\project\kids_wear\girl\8.jpg' %}" class="card-img-top" alt="Kids Shorts">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title">Kids Shorts</h6>
+          <p class="text-success">₹699</p>
+<button class="btn add-btn mt-auto add-to-cart" style="
+    border: 1px solid black;"   data-name="Cartoon Hoodie" data-price="999"> Add to Cart</button>
+        </div>
+      </div>
+    </div>   <div class="col">
+      <div class="card product-card text-center p-3 h-100">
+        <img src="{% static '\project\kids_wear\girl\9.jpg' %}" class="card-img-top" alt="Kids Shorts">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title">Kids Shorts</h6>
+          <p class="text-success">₹699</p>
+<button class="btn add-btn mt-auto add-to-cart" style="
+    border: 1px solid black;"   data-name="Cartoon Hoodie" data-price="999"> Add to Cart</button>
+        </div>
+      </div>
+    </div>
+    </div>   
+</div>
+
+
+
+
+<!-- 👔 Men's Collection -->
+<div class="container my-5" id="men">
+  <h5 class="section-title">Men's Collection</h5>
+  <div class="row row-cols-2 row-cols-md-5 g-4">
+
+    <div class="col">
+      <div class="card product-card text-center p-3 h-100">
+        <img src="{% static 'project/mens/1.jpg' %}" class="card-img-top" alt="Casual Shirt">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title">Casual Shirt</h6>
+          <p class="text-success">₹1,499</p>
+          <button class="btn add-btn mt-auto add-to-cart" data-name="Casual Shirt" data-price="1499" style="border: 1px solid black;">🛒 Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card product-card text-center p-3 h-100">
+        <img src="{% static 'project/mens/2.jpeg' %}" class="card-img-top" alt="Denim Jacket">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title">Denim Jacket</h6>
+          <p class="text-success">₹2,199</p>
+          <button class="btn add-btn mt-auto add-to-cart" data-name="Denim Jacket" data-price="2199" style="border: 1px solid black;">🛒 Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card product-card text-center p-3 h-100">
+        <img src="{% static 'project/mens/3.jpg' %}" class="card-img-top" alt="Ethnic Kurta">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title">Ethnic Kurta</h6>
+          <p class="text-success">₹1,799</p>
+          <button class="btn add-btn mt-auto add-to-cart" data-name="Ethnic Kurta" data-price="1799" style="border: 1px solid black;">🛒 Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card product-card text-center p-3 h-100">
+        <img src="{% static 'project/mens/4.jpg' %}" class="card-img-top" alt="Winter Hoodie">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title">Winter Hoodie</h6>
+          <p class="text-success">₹1,999</p>
+          <button class="btn add-btn mt-auto add-to-cart" data-name="Winter Hoodie" data-price="1999" style="border: 1px solid black;">🛒 Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card product-card text-center p-3 h-100">
+        <img src="{% static 'project/mens/5.jpg' %}" class="card-img-top" alt="Trousers">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title">Trousers</h6>
+          <p class="text-success">₹1,299</p>
+          <button class="btn add-btn mt-auto add-to-cart" data-name="Trousers" data-price="1299" style="border: 1px solid black;">🛒 Add to Cart</button>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card product-card text-center p-3 h-100">
+        <img src="{% static 'project/mens/6.jpg' %}" class="card-img-top" alt="Trousers">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title">Trousers</h6>
+          <p class="text-success">₹1,299</p>
+          <button class="btn add-btn mt-auto add-to-cart" data-name="Trousers" data-price="1299" style="border: 1px solid black;">🛒 Add to Cart</button>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card product-card text-center p-3 h-100">
+        <img src="{% static 'project/mens/7.jpg' %}" class="card-img-top" alt="Trousers">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title">Trousers</h6>
+          <p class="text-success">₹1,299</p>
+          <button class="btn add-btn mt-auto add-to-cart" data-name="Trousers" data-price="1299" style="border: 1px solid black;">🛒 Add to Cart</button>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card product-card text-center p-3 h-100">
+        <img src="{% static 'project/mens/8.jpg' %}" class="card-img-top" alt="Trousers">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title">Trousers</h6>
+          <p class="text-success">₹1,299</p>
+          <button class="btn add-btn mt-auto add-to-cart" data-name="Trousers" data-price="1299" style="border: 1px solid black;">🛒 Add to Cart</button>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card product-card text-center p-3 h-100">
+        <img src="{% static 'project/mens/9.jpg' %}" class="card-img-top" alt="Trousers">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title">Trousers</h6>
+          <p class="text-success">₹1,299</p>
+          <button class="btn add-btn mt-auto add-to-cart" data-name="Trousers" data-price="1299" style="border: 1px solid black;">🛒 Add to Cart</button>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card product-card text-center p-3 h-100">
+        <img src="{% static 'project/mens/10.jpg' %}" class="card-img-top" alt="Trousers">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title">Trousers</h6>
+          <p class="text-success">₹1,299</p>
+          <button class="btn add-btn mt-auto add-to-cart" data-name="Trousers" data-price="1299" style="border: 1px solid black;">🛒 Add to Cart</button>
+        </div>
+      </div>
+    </div>
+</div></div>
+<div class="container my-5" id="women">
+  <h5 class="section-title">👗 Women's Collection</h5>
+  <div class="row row-cols-2 row-cols-md-5 g-4">
+
+    <div class="col">
+      <div class="card product-card text-center p-3 h-100">
+        <img src="{% static 'project/women/images.jpg' %}" class="card-img-top" alt="Elegant Kurti">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title">Elegant Kurti</h6>
+          <p class="text-success">₹1,299</p>
+          <button class="btn add-btn mt-auto add-to-cart" data-name="Elegant Kurti" data-price="1299" style="border: 1px solid black;">🛒 Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card product-card text-center p-3 h-100">
+        <img src="{% static 'project/women/2.jpg' %}" class="card-img-top" alt="Chiffon Saree">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title">Chiffon Saree</h6>
+          <p class="text-success">₹1,899</p>
+          <button class="btn add-btn mt-auto add-to-cart" data-name="Chiffon Saree" data-price="1899" style="border: 1px solid black;">🛒 Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card product-card text-center p-3 h-100">
+        <img src="{% static 'project/women/3.jpg' %}" class="card-img-top" alt="Anarkali Dress">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title">Anarkali Dress</h6>
+          <p class="text-success">₹2,299</p>
+          <button class="btn add-btn mt-auto add-to-cart" data-name="Anarkali Dress" data-price="2299" style="border: 1px solid black;">🛒 Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card product-card text-center p-3 h-100">
+        <img src="{% static 'project/women/4.jpg' %}" class="card-img-top" alt="Floral Lehenga">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title">Floral Lehenga</h6>
+          <p class="text-success">₹3,199</p>
+          <button class="btn add-btn mt-auto add-to-cart" data-name="Floral Lehenga" data-price="3199" style="border: 1px solid black;">🛒 Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card product-card text-center p-3 h-100">
+        <img src="{% static 'project/women/5.jpg' %}" class="card-img-top" alt="Cotton Frock">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title">Cotton Frock</h6>
+          <p class="text-success">₹899</p>
+          <button class="btn add-btn mt-auto add-to-cart" data-name="Cotton Frock" data-price="899" style="border: 1px solid black;">🛒 Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card product-card text-center p-3 h-100">
+        <img src="{% static 'project/women/6.jpg' %}" class="card-img-top" alt="Embroidered Gown">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title">Embroidered Gown</h6>
+          <p class="text-success">₹2,499</p>
+          <button class="btn add-btn mt-auto add-to-cart" data-name="Embroidered Gown" data-price="2499" style="border: 1px solid black;">🛒 Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card product-card text-center p-3 h-100">
+        <img src="{% static 'project/women/7.jpg' %}" class="card-img-top" alt="Designer Blouse">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title">Designer Blouse</h6>
+          <p class="text-success">₹799</p>
+          <button class="btn add-btn mt-auto add-to-cart" data-name="Designer Blouse" data-price="799" style="border: 1px solid black;">🛒 Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card product-card text-center p-3 h-100">
+        <img src="{% static 'project/women/8.jpg' %}" class="card-img-top" alt="Printed Skirt">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title">Printed Skirt</h6>
+          <p class="text-success">₹1,199</p>
+          <button class="btn add-btn mt-auto add-to-cart" data-name="Printed Skirt" data-price="1199" style="border: 1px solid black;">🛒 Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card product-card text-center p-3 h-100">
+        <img src="{% static 'project/women/9.jpg' %}" class="card-img-top" alt="Festival Suit">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title">Festival Suit</h6>
+          <p class="text-success">₹1,899</p>
+          <button class="btn add-btn mt-auto add-to-cart" data-name="Festival Suit" data-price="1899" style="border: 1px solid black;">🛒 Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card product-card text-center p-3 h-100">
+        <img src="{% static 'project/women/10.jpg' %}" class="card-img-top" alt="Button-Up Shirt">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h6 class="card-title">Button-Up Shirt</h6>
+          <p class="text-success">₹1,099</p>
+          <button class="btn add-btn mt-auto add-to-cart" data-name="Button-Up Shirt" data-price="1099" style="border: 1px solid black;">🛒 Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="container my-5" id="occasion">
+  <h5 class="section-title">💼 Occasion Wear Collection</h5>
+  <div class="row row-cols-2 row-cols-md-5 g-4">
+
+    <!-- MEN (1-10) -->
+    <div class="col"><div class="card product-card text-center p-3 h-100"><img src="{% static 'project/occasion_wear/men/image1.jpg' %}" class="card-img-top" alt="Classic Sherwani"><div class="card-body d-flex flex-column justify-content-between"><h6 class="card-title">Classic Sherwani</h6><p class="text-success">₹2,699</p><button class="btn add-btn mt-auto add-to-cart" data-name="Classic Sherwani" data-price="2699" style="border: 1px solid black;">🛒 Add to Cart</button></div></div></div>
+    <div class="col"><div class="card product-card text-center p-3 h-100"><img src="{% static 'project/occasion_wear/men/image2.jpg' %}" class="card-img-top" alt="Beige Indo-Western"><div class="card-body d-flex flex-column justify-content-between"><h6 class="card-title">Beige Indo-Western</h6><p class="text-success">₹3,199</p><button class="btn add-btn mt-auto add-to-cart" data-name="Beige Indo-Western" data-price="3199" style="border: 1px solid black;">🛒 Add to Cart</button></div></div></div>
+    <div class="col"><div class="card product-card text-center p-3 h-100"><img src="{% static 'project/occasion_wear/men/image3.jpg' %}" class="card-img-top" alt="Royal Blue Blazer"><div class="card-body d-flex flex-column justify-content-between"><h6 class="card-title">Royal Blue Blazer</h6><p class="text-success">₹3,599</p><button class="btn add-btn mt-auto add-to-cart" data-name="Royal Blue Blazer" data-price="3599" style="border: 1px solid black;">🛒 Add to Cart</button></div></div></div>
+    <div class="col"><div class="card product-card text-center p-3 h-100"><img src="{% static 'project/occasion_wear/men/image4.jpg' %}" class="card-img-top" alt="Embroidered Kurta"><div class="card-body d-flex flex-column justify-content-between"><h6 class="card-title">Embroidered Kurta</h6><p class="text-success">₹1,999</p><button class="btn add-btn mt-auto add-to-cart" data-name="Embroidered Kurta" data-price="1999" style="border: 1px solid black;">🛒 Add to Cart</button></div></div></div>
+    <div class="col"><div class="card product-card text-center p-3 h-100"><img src="{% static 'project/occasion_wear/men/image5.jpg' %}" class="card-img-top" alt="Golden Brocade Suit"><div class="card-body d-flex flex-column justify-content-between"><h6 class="card-title">Golden Brocade Suit</h6><p class="text-success">₹3,499</p><button class="btn add-btn mt-auto add-to-cart" data-name="Golden Brocade Suit" data-price="3499" style="border: 1px solid black;">🛒 Add to Cart</button></div></div></div>
+    <div class="col"><div class="card product-card text-center p-3 h-100"><img src="{% static 'project/occasion_wear/men/image6.jpg' %}" class="card-img-top" alt="Ivory Kurta Set"><div class="card-body d-flex flex-column justify-content-between"><h6 class="card-title">Ivory Kurta Set</h6><p class="text-success">₹1,799</p><button class="btn add-btn mt-auto add-to-cart" data-name="Ivory Kurta Set" data-price="1799" style="border: 1px solid black;">🛒 Add to Cart</button></div></div></div>
+    <div class="col"><div class="card product-card text-center p-3 h-100"><img src="{% static 'project/occasion_wear/men/image7.jpg' %}" class="card-img-top" alt="Pathani Suit"><div class="card-body d-flex flex-column justify-content-between"><h6 class="card-title">Pathani Suit</h6><p class="text-success">₹2,199</p><button class="btn add-btn mt-auto add-to-cart" data-name="Pathani Suit" data-price="2199" style="border: 1px solid black;">🛒 Add to Cart</button></div></div></div>
+    <div class="col"><div class="card product-card text-center p-3 h-100"><img src="{% static 'project/occasion_wear/men/image8.jpg' %}" class="card-img-top" alt="Tunic & Jacket Combo"><div class="card-body d-flex flex-column justify-content-between"><h6 class="card-title">Tunic & Jacket Combo</h6><p class="text-success">₹2,999</p><button class="btn add-btn mt-auto add-to-cart" data-name="Tunic & Jacket Combo" data-price="2999" style="border: 1px solid black;">🛒 Add to Cart</button></div></div></div>
+    <div class="col"><div class="card product-card text-center p-3 h-100"><img src="{% static 'project/occasion_wear/men/image9.jpg' %}" class="card-img-top" alt="Maroon Partywear Set"><div class="card-body d-flex flex-column justify-content-between"><h6 class="card-title">Maroon Partywear Set</h6><p class="text-success">₹2,399</p><button class="btn add-btn mt-auto add-to-cart" data-name="Maroon Partywear Set" data-price="2399" style="border: 1px solid black;">🛒 Add to Cart</button></div></div></div>
+    <div class="col"><div class="card product-card text-center p-3 h-100"><img src="{% static 'project/occasion_wear/men/image10.jpg' %}" class="card-img-top" alt="Beige Textured Suit"><div class="card-body d-flex flex-column justify-content-between"><h6 class="card-title">Beige Textured Suit</h6><p class="text-success">₹3,299</p><button class="btn add-btn mt-auto add-to-cart" data-name="Beige Textured Suit" data-price="3299" style="border: 1px solid black;">🛒 Add to Cart</button></div></div></div>
+
+    <!-- WOMEN (11–20) -->
+    <div class="col"><div class="card product-card text-center p-3 h-100"><img src="{% static 'project/occasion_wear/women/image1.jpg' %}" class="card-img-top" alt="Silk Saree"><div class="card-body d-flex flex-column justify-content-between"><h6 class="card-title">Silk Saree</h6><p class="text-success">₹2,899</p><button class="btn add-btn mt-auto add-to-cart" data-name="Silk Saree" data-price="2899" style="border: 1px solid black;">🛒 Add to Cart</button></div></div></div>
+    <div class="col"><div class="card product-card text-center p-3 h-100"><img src="{% static 'project/occasion_wear/women/image2.jpg' %}" class="card-img-top" alt="Designer Lehenga"><div class="card-body d-flex flex-column justify-content-between"><h6 class="card-title">Designer Lehenga</h6><p class="text-success">₹3,599</p><button class="btn add-btn mt-auto add-to-cart" data-name="Designer Lehenga" data-price="3599" style="border: 1px solid black;">🛒 Add to Cart</button></div></div></div>
+    <div class="col"><div class="card product-card text-center p-3 h-100"><img src="{% static 'project/occasion_wear/women/image3.jpg' %}" class="card-img-top" alt="Designer Lehenga"><div class="card-body d-flex flex-column justify-content-between"><h6 class="card-title">Designer Lehenga</h6><p class="text-success">₹3,599</p><button class="btn add-btn mt-auto add-to-cart" data-name="Designer Lehenga" data-price="3599" style="border: 1px solid black;">🛒 Add to Cart</button></div></div></div>
+    <div class="col"><div class="card product-card text-center p-3 h-100"><img src="{% static 'project/occasion_wear/women/image4.jpg' %}" class="card-img-top" alt="Designer Lehenga"><div class="card-body d-flex flex-column justify-content-between"><h6 class="card-title">Designer Lehenga</h6><p class="text-success">₹3,599</p><button class="btn add-btn mt-auto add-to-cart" data-name="Designer Lehenga" data-price="3599" style="border: 1px solid black;">🛒 Add to Cart</button></div></div></div>
+    <div class="col"><div class="card product-card text-center p-3 h-100"><img src="{% static 'project/occasion_wear/women/image5.jpg' %}" class="card-img-top" alt="Designer Lehenga"><div class="card-body d-flex flex-column justify-content-between"><h6 class="card-title">Designer Lehenga</h6><p class="text-success">₹3,599</p><button class="btn add-btn mt-auto add-to-cart" data-name="Designer Lehenga" data-price="3599" style="border: 1px solid black;">🛒 Add to Cart</button></div></div></div>
+    <div class="col"><div class="card product-card text-center p-3 h-100"><img src="{% static 'project/occasion_wear/women/image6.jpg' %}" class="card-img-top" alt="Designer Lehenga"><div class="card-body d-flex flex-column justify-content-between"><h6 class="card-title">Designer Lehenga</h6><p class="text-success">₹3,599</p><button class="btn add-btn mt-auto add-to-cart" data-name="Designer Lehenga" data-price="3599" style="border: 1px solid black;">🛒 Add to Cart</button></div></div></div>
+    <div class="col"><div class="card product-card text-center p-3 h-100"><img src="{% static 'project/occasion_wear/women/7.jpg' %}" class="card-img-top" alt="Designer Lehenga"><div class="card-body d-flex flex-column justify-content-between"><h6 class="card-title">Designer Lehenga</h6><p class="text-success">₹3,599</p><button class="btn add-btn mt-auto add-to-cart" data-name="Designer Lehenga" data-price="3599" style="border: 1px solid black;">🛒 Add to Cart</button></div></div></div>
+    <div class="col"><div class="card product-card text-center p-3 h-100"><img src="{% static 'project/occasion_wear/women/8.jpg' %}" class="card-img-top" alt="Designer Lehenga"><div class="card-body d-flex flex-column justify-content-between"><h6 class="card-title">Designer Lehenga</h6><p class="text-success">₹3,599</p><button class="btn add-btn mt-auto add-to-cart" data-name="Designer Lehenga" data-price="3599" style="border: 1px solid black;">🛒 Add to Cart</button></div></div></div>
+    <div class="col"><div class="card product-card text-center p-3 h-100"><img src="{% static 'project/occasion_wear/women/9.jpg' %}" class="card-img-top" alt="Designer Lehenga"><div class="card-body d-flex flex-column justify-content-between"><h6 class="card-title">Designer Lehenga</h6><p class="text-success">₹3,599</p><button class="btn add-btn mt-auto add-to-cart" data-name="Designer Lehenga" data-price="3599" style="border: 1px solid black;">🛒 Add to Cart</button></div></div></div>
+    <div class="col"><div class="card product-card text-center p-3 h-100"><img src="{% static 'project/occasion_wear/women/10.jpg' %}" class="card-img-top" alt="Designer Lehenga"><div class="card-body d-flex flex-column justify-content-between"><h6 class="card-title">Designer Lehenga</h6><p class="text-success">₹3,599</p><button class="btn add-btn mt-auto add-to-cart" data-name="Designer Lehenga" data-price="3599" style="border: 1px solid black;">🛒 Add to Cart</button></div></div></div>
+
+  </div>
+</div>
+<footer class="bg-dark text-white py-2 shadow-sm">
+  <div class="container text-center" style="max-width: 960px;">
+    <h5 class="mb-0" style="font-family: 'Georgia', serif; letter-spacing: 0.5px;">
+      🎉 Flat 30% Off on Festival Collection!
+    </h5>
+  </div>
+</footer>
+<section class="container my-5" id="deals" style="max-width: 1140px;">
+  <h5 class="section-title text-center text-uppercase fw-bold mb-4" style="font-family: 'Georgia', serif;">
+    💥 Limited Time Deals
+  </h5>
+  <div class="row row-cols-2 row-cols-md-4 g-4">
+    <!-- 🛒 Product cards go here -->
+  </div>
+</section>
+
+<!-- 🧼 Footer -->
+<footer class="bg-dark text-white mt-5 py-4">
+  <div class="container text-center small">
+    &copy; 2025 clothing. All rights reserved.
+  </div>
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- <script src="{% static '/js/shop.js' %}"></script> -->
+</body>
+</html> 

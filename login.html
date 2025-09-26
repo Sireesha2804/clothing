@@ -1,0 +1,147 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login | Clothing</title>
+  <script src="{% static 'css/shop.js' %}"></script>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+  <style>
+    body {
+      background: linear-gradient(to top left, #fafafa, #e2d1c3);
+      font-family: 'Georgia', serif;
+      animation: softGlow 15s ease infinite, fadeIn 0.6s ease-in;
+      background-size: 200% 200%;
+    }
+
+    @keyframes softGlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .login-card {
+      backdrop-filter: blur(12px);
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: 1rem;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+      padding: 2.5rem;
+      max-width: 420px;
+      animation: fadeIn 0.7s ease-out;
+    }
+
+    .login-title {
+      text-align: center;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #2b2b2b;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.5px;
+    }
+
+    .form-label {
+      font-weight: 500;
+      font-size: 0.95rem;
+      color: #444;
+    }
+
+    .form-control {
+      border: 1px solid #aaa;
+      background-color: #fdfdfd;
+      font-size: 0.95rem;
+      padding: 0.75rem 1rem;
+      border-radius: 0.4rem;
+    }
+
+    .form-control:focus {
+      animation: pulse 0.3s ease-in-out;
+      border-color: #444;
+      box-shadow: 0 0 0 0.2rem rgba(100, 100, 100, 0.2);
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.01); }
+      100% { transform: scale(1); }
+    }
+
+    .btn-classic {
+      background-color: #2b2b2b;
+      color: #fff;
+      font-weight: 600;
+      text-transform: uppercase;
+      border-radius: 0.4rem;
+      border: none;
+    }
+
+    .btn-classic:hover {
+      background-color: #000;
+    }
+
+    .toggle-icon {
+      position: absolute;
+      top: 50%;
+      right: 1rem;
+      transform: translateY(14%);
+      font-size: 1.1rem;
+      color: #888;
+      cursor: pointer;
+      z-index: 2;
+    }
+  </style>
+</head>
+
+<body class="d-flex align-items-center justify-content-center vh-100">
+
+  <form method="POST" class="login-card shadow">
+    {% csrf_token %}
+    <h3 class="login-title">Login to Clothing</h3>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} text-center">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+
+    <div class="mb-3">
+      <label for="username" class="form-label">Username</label>
+      <input type="text" name="username" class="form-control" id="username" placeholder="Enter your username" required>
+    </div>
+
+    <div class="mb-4 position-relative">
+      <label for="password" class="form-label">Password</label>
+      <input type="password" name="password" class="form-control pe-5" id="password" placeholder="Enter your password" required>
+      <i class="bi bi-eye-slash toggle-icon" onclick="togglePasswordVisibility(this, 'password')"></i>
+    </div>
+
+    <div class="d-grid mt-3">
+      <button type="submit" class="btn btn-classic">Login</button>
+    </div>
+
+    <p class="text-center mt-3 small">
+      Not signed up yet?
+      <a href="{% url 'signup' %}" class="fw-semibold text-decoration-none">Create an account</a>
+    </p>
+  </form>
+
+  <script>
+    function togglePasswordVisibility(icon, inputId) {
+      const field = document.getElementById(inputId);
+      const isHidden = field.type === "password";
+
+      field.type = isHidden ? "text" : "password";
+      icon.classList.toggle("bi-eye", isHidden);
+      icon.classList.toggle("bi-eye-slash", !isHidden);
+    }
+  </script>
+</body>
+</html>
